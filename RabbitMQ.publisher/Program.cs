@@ -31,21 +31,17 @@ namespace RabbitMQ.publisher
 
             channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
 
-            Enum.GetNames(typeof(LogNames)).ToList().ForEach(x =>
-            {
-                var routeKey = $"route-{x}";
-                var queueName = $"direct-queue-{x}";
-                channel.QueueDeclare(queueName, true, false, false);
-                channel.QueueBind(queueName, "logs-topic", routeKey, null);
-            });
-
+            Random rnd = new Random();
             Enumerable.Range(1, 100).ToList().ForEach(x =>
              {
-                 LogNames log = (LogNames)new Random().Next(1, 5);
+                 LogNames log1 = (LogNames)rnd.Next(1, 5);
+                 LogNames log2 = (LogNames)rnd.Next(1, 5);
+                 LogNames log3 = (LogNames)rnd.Next(1, 5);
+                 var routeKey = $"{log1}.{log2}.{log3}";
 
-                 var message = $"log-type: {log}";
+                 var message = $"log-type: {log1}-{log2}-{log3}";
                  var messageBody = Encoding.UTF8.GetBytes(message);
-                 var routeKey = $"route-{log}";
+
                  channel.BasicPublish("logs-topic", routeKey, null, messageBody);
 
                  Console.WriteLine($"log gönderilmiştir {message}");
