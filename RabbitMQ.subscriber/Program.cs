@@ -16,12 +16,17 @@ namespace RabbitMQ.subscriber
             using var connection = factory.CreateConnection();
 
             var channel = connection.CreateModel();
+            channel.ExchangeDeclare("logs-topic", durable: true, type: ExchangeType.Topic);
 
             channel.BasicQos(0, 1, false);
 
             var consumer = new EventingBasicConsumer(channel);
 
-            var queueName = "direct-queue-Critical";
+            var queueName = channel.QueueDeclare().QueueName;
+
+            var routeKey = "*.Error.*";
+            channel.QueueBind(queueName, "logs-topic", routeKey); //bind etme amacımız subscriber düştüğünde kuyruğun da otomatik olarak düşmesini istediğimiz için
+
             channel.BasicConsume(queueName, false, consumer);
 
             Console.WriteLine("loglar dinleniyor");
