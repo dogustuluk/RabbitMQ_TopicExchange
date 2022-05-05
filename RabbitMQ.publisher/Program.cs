@@ -21,6 +21,7 @@ namespace RabbitMQ.publisher
             //yıldız(*) ifadesi herhangi bir şey olabileceğini temsil etmektedir. Örneğin ortadaki ifadenin "Error" oluğ baştaki ve sonrakinin herhangi bir ifade olmasını istersek
             //>>>> *.Error.* şeklinde yazmamız gerekir.
             //# ifadesi başta ya da sondakinin ilgili parametre olmasını sağlar >>> #.Warning
+            //Topic Exchange çok detaylı bir route'lama yapılmak istendiğinde kullanılabilecek bir exchange tipidir.
             var factory = new ConnectionFactory();
             factory.Uri = new Uri("amqps://nxdranwu:n_3nr-xZlXx0NoCWuFP05gTqZfp7_hwK@sparrow.rmq.cloudamqp.com/nxdranwu");
             
